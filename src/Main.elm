@@ -44,7 +44,10 @@ update msg model =
     case msg of
         ClickedFetch ->
             ( { model | remoteData = Loading }
-            , Cmd.none
+            , Http.get
+                { url = "/.netlify/functions/api"
+                , expect = Http.expectString GotData
+                }
             )
 
         GotData result ->
@@ -72,8 +75,8 @@ view model =
             Loading ->
                 text "loading..."
 
-            Success _ ->
-                text "ok"
+            Success data ->
+                div [] [ text "Fetched data: ", pre [] [ text data ] ]
 
             Failure _ ->
                 text "err"
