@@ -1,0 +1,16 @@
+GET http://localhost:8888/api/todos
+
+###
+
+GET http://localhost:8888/api/todos?id=0
+
+
+###
+
+POST http://localhost:8888/api/todos
+content-type: application/json
+
+{
+    "text": "My first todo"
+}
+
