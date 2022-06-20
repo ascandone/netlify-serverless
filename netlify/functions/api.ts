@@ -1,4 +1,6 @@
-export async function handler(event, context) {
+import { Handler } from "@netlify/functions"
+
+export const handler: Handler = async () => {
   await delay(1000)
 
   return {
