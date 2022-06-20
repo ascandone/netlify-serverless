@@ -1,4 +1,4 @@
-exports.handler = async function (event, context) {
+export async function handler(event, context) {
   await delay(1000)
 
   return {
