@@ -3,6 +3,9 @@ module Main exposing (main)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
+import Http
+import RemoteData exposing (RemoteData(..))
 
 
 main : Program Flags Model Msg
@@ -20,25 +23,32 @@ type alias Flags =
 
 
 type alias Model =
-    {}
+    { remoteData : RemoteData Http.Error String
+    }
 
 
 init : Flags -> ( Model, Cmd Msg )
 init _ =
-    ( {}
+    ( { remoteData = NotAsked }
     , Cmd.none
     )
 
 
 type Msg
-    = Noop
+    = ClickedFetch
+    | GotData (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Noop ->
-            ( model
+        ClickedFetch ->
+            ( { model | remoteData = Loading }
+            , Cmd.none
+            )
+
+        GotData result ->
+            ( { model | remoteData = RemoteData.fromResult result }
             , Cmd.none
             )
 
@@ -49,6 +59,22 @@ subscriptions _ =
 
 
 view : Model -> Html Msg
-view _ =
-    div [ class "p-2 font-semibold text-gray-900" ]
-        [ text "Hello world!" ]
+view model =
+    div [ class "p-2" ]
+        [ case model.remoteData of
+            NotAsked ->
+                button
+                    [ class "px-5 py-3 leading-none bg-zinc-900 text-white rounded-sm"
+                    , onClick ClickedFetch
+                    ]
+                    [ text "Fetch data" ]
+
+            Loading ->
+                text "loading..."
+
+            Success _ ->
+                text "ok"
+
+            Failure _ ->
+                text "err"
+        ]
