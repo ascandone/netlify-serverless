@@ -1,5 +1,3 @@
-import { setTimeout as delay } from "timers/promises"
-
 exports.handler = async function (event, context) {
   await delay(1000)
 
@@ -8,3 +6,5 @@ exports.handler = async function (event, context) {
     body: JSON.stringify({ message: "Hello World" }),
   }
 }
+
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
