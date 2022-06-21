@@ -7,6 +7,7 @@ import Html.Attributes exposing (class, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Http exposing (Error(..))
 import RemoteData exposing (RemoteData(..))
+import Ui.Input
 
 
 main : Program Flags Model Msg
@@ -110,14 +111,13 @@ btnCls =
 view : Model -> Html Msg
 view model =
     div [ class "p-2" ]
-        [ form [ class "flex", onSubmit SubmitTodo ]
-            [ input
-                [ class "border rounded focus:ring focus:outline-none px-2"
-                , placeholder "insert text"
-                , value model.inputText
-                , onInput InputTodo
+        [ form [ class "flex items-center", onSubmit SubmitTodo ]
+            [ Ui.Input.view
+                [ Ui.Input.placeholder "Insert text"
+                , Ui.Input.value model.inputText
+                , Ui.Input.onInput InputTodo
+                , Ui.Input.label "New item"
                 ]
-                []
             , div [ class "w-2" ] []
             , button
                 [ btnCls
