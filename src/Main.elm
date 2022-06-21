@@ -5,7 +5,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (class, placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import Http
+import Http exposing (Error(..))
 import RemoteData exposing (RemoteData(..))
 
 
@@ -142,9 +142,28 @@ view model =
             Success todos ->
                 ul [ class "list-disc list-inside" ] (todos |> List.map viewTodo)
 
-            Failure _ ->
-                div [ class "text-red-800" ] [ text "Error" ]
+            Failure err ->
+                div [ class "text-red-800" ] [ text "Error: ", pre [] [ text (errToString err) ] ]
         ]
+
+
+errToString : Http.Error -> String
+errToString err =
+    case err of
+        BadUrl u ->
+            "Bad url: " ++ u
+
+        Timeout ->
+            "Timeout"
+
+        NetworkError ->
+            "NetworkError"
+
+        BadStatus s ->
+            "BadStatus: " ++ String.fromInt s
+
+        BadBody b ->
+            "BadBody: " ++ b
 
 
 viewTodo : Api.Todos.Todo -> Html msg
