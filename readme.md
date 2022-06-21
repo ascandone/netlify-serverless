@@ -1,3 +1,4 @@
-# elm-starter-template
-
-An elm starter template using with tailwind for styling, prettier for js code style, and parcel for bundling
+A minimal demo of a full stack app using:
+* elm for FE hosted on netlify
+* netlify serverless functions
+* supabase db
