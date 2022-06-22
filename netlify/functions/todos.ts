@@ -1,13 +1,10 @@
 import { Handler } from "@netlify/functions"
-import { supabase } from "../supabase"
+import { prisma } from "../prisma"
 
-export const handler: Handler = async (event, ctx) => {
-  // event.queryStringParameters
-
+export const handler: Handler = async (event) => {
   switch (event.httpMethod) {
     case "GET": {
-      const { data: todos, error } = await supabase.from("todos").select("*")
-      // TODO handle err
+      const todos = await prisma.todos.findMany()
 
       return {
         statusCode: 200,
@@ -18,14 +15,11 @@ export const handler: Handler = async (event, ctx) => {
     case "POST": {
       const { text } = JSON.parse(event.body!)
 
-      const { data: todo, error } = await supabase
-        .from("todos")
-        .insert({
+      const todo = await prisma.todos.create({
+        data: {
           text,
-        })
-        .single()
-
-      console.log(todo)
+        },
+      })
 
       return {
         statusCode: 200,
@@ -36,4 +30,9 @@ export const handler: Handler = async (event, ctx) => {
     default:
       return { statusCode: 400 }
   }
+}
+
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  return this.toString()
 }
