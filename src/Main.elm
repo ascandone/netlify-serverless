@@ -116,7 +116,6 @@ view model =
                 [ Ui.Input.placeholder "Insert text"
                 , Ui.Input.value model.inputText
                 , Ui.Input.onInput InputTodo
-                , Ui.Input.label "New item"
                 ]
             , div [ class "w-2" ] []
             , button
