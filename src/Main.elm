@@ -3,8 +3,8 @@ module Main exposing (main)
 import Api.Todos
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (class, placeholder, type_, value)
-import Html.Events exposing (onClick, onInput, onSubmit)
+import Html.Attributes exposing (class, type_, value)
+import Html.Events exposing (onClick, onSubmit)
 import Http exposing (Error(..))
 import RemoteData exposing (RemoteData(..))
 import Ui.Input
